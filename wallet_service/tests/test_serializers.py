@@ -27,7 +27,8 @@ class TestPaymentSerializers(BaseSerializerTest):
             ser.is_valid(raise_exception=True)
         except Exception as e:
             self.assertIsInstance(e, ValidationError)
-            self.assertEquals("Amount to be transferred cannot be more than account holdings",
+            self.assertEquals("Amount to be transferred cannot be "
+                              "more than account holdings",
                               str(e.detail[0]))
             self.assertEquals("invalid",
                               e.detail[0].code)

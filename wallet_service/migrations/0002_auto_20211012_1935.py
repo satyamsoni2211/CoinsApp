@@ -13,11 +13,15 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='payment',
             name='amount',
-            field=models.DecimalField(decimal_places=2, default=0.0, max_digits=10),
+            field=models.DecimalField(
+                decimal_places=2,
+                default=0.0, max_digits=10),
         ),
         migrations.AlterField(
             model_name='useraccount',
             name='balance',
-            field=models.DecimalField(decimal_places=2, default=0.0, max_digits=10),
+            field=models.DecimalField(
+                decimal_places=2,
+                default=0.0, max_digits=10),
         ),
     ]

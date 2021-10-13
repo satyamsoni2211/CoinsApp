@@ -27,12 +27,17 @@ def create_instance(validated_data: Dict[str, Any],
     :param transaction_id: transaction id for transfer
     :return: Payment instance
     """
-    account, to_account, amount = validated_data.get("account"), validated_data.get(
-        "to_account"), validated_data.get("amount")
-    instance = klass.objects.create(account=account, to_account=to_account, amount=amount,
+    account = validated_data.get("account")
+    to_account = validated_data.get("to_account")
+    amount = validated_data.get("amount")
+    instance = klass.objects.create(account=account,
+                                    to_account=to_account,
+                                    amount=amount,
                                     direction=PaymentDirectionChoices.OUTGOING,
                                     transaction_id=transaction_id)
-    klass.objects.create(account=to_account, from_account=account, amount=amount,
+    klass.objects.create(account=to_account,
+                         from_account=account,
+                         amount=amount,
                          direction=PaymentDirectionChoices.INCOMING,
                          transaction_id=transaction_id)
     account.balance = account.balance - amount
@@ -44,11 +49,12 @@ def create_instance(validated_data: Dict[str, Any],
 
 class PaymentSerializer(serializers.ModelSerializer):
     def is_valid(self, raise_exception=False):
-        valid = super(PaymentSerializer, self).is_valid(raise_exception=raise_exception)
+        valid = super(PaymentSerializer, self) \
+            .is_valid(raise_exception=raise_exception)
         data = self.validated_data
-        account, amount, to_account = data.get("account"), \
-                                      data.get("amount"), \
-                                      data.get("to_account")
+        account = data.get("account")
+        amount = data.get("amount")
+        to_account = data.get("to_account")
         if amount > account.balance:
             if raise_exception:
                 raise ValidationError("Amount to be transferred cannot "
@@ -57,7 +63,8 @@ class PaymentSerializer(serializers.ModelSerializer):
         if account.currency != to_account.currency:
             if raise_exception:
                 raise ValidationError(f"Only same currency allowed got "
-                                      f"{account.currency} and {to_account.currency}")
+                                      f"{account.currency} and "
+                                      f"{to_account.currency}")
             return False
         return valid
 

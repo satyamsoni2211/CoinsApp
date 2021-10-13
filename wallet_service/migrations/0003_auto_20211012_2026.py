@@ -19,7 +19,9 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='payment',
             name='transaction_date',
-            field=models.DateTimeField(auto_now_add=True, default=timezone.now),
+            field=models.DateTimeField(
+                auto_now_add=True,
+                default=timezone.now),
             preserve_default=False,
         ),
     ]

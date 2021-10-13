@@ -16,7 +16,9 @@ class PaymentDirectionChoices(models.TextChoices):
 
 class UserAccount(models.Model):
     id = models.CharField(primary_key=True, max_length=100)
-    balance = models.DecimalField(default=0.00, decimal_places=2, max_digits=10)
+    balance = models.DecimalField(default=0.00,
+                                  decimal_places=2,
+                                  max_digits=10)
     currency = models.CharField(default=CurrencyChoices.USD,
                                 choices=CurrencyChoices.choices,
                                 max_length=3)
@@ -38,6 +40,7 @@ class Payment(models.Model):
                                      related_name="payments_from",
                                      related_query_name="payments_from",
                                      null=True)
-    direction = models.CharField(max_length=20, choices=PaymentDirectionChoices.choices)
+    direction = models.CharField(max_length=20,
+                                 choices=PaymentDirectionChoices.choices)
     transaction_id = models.CharField(max_length=100)
     transaction_date = models.DateTimeField(auto_now_add=True)

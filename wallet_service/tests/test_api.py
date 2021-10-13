@@ -39,7 +39,9 @@ class TestAPI(APITestCase):
         res = self.client.get(path)
         self.assertEquals(res.status_code, status.HTTP_200_OK)
         data = res.data
-        self.assertEquals(len(data), UserAccount.objects.filter(currency="USD").count())
+        self.assertEquals(len(data),
+                          UserAccount.objects.filter(currency="USD")
+                          .count())
         self.assertEquals("bob123", data[0].get("id"))
 
     def test_create_payment_api(self):
