@@ -1,6 +1,9 @@
 import uuid
+from typing import Dict, Any
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
+from django.db import models
+from django.db import transaction
 
 from wallet_service.models import UserAccount, Payment, PaymentDirectionChoices
 
@@ -9,6 +12,34 @@ class UserAccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserAccount
         fields = "__all__"
+
+
+def create_instance(validated_data: Dict[str, Any],
+                    klass: models.Model,
+                    transaction_id: str):
+    """
+    Function to create **:py:obj::Payment** instance
+    via serializer
+
+
+    :param validated_data: data posted by user
+    :param klass: Payment Model class
+    :param transaction_id: transaction id for transfer
+    :return: Payment instance
+    """
+    account, to_account, amount = validated_data.get("account"), validated_data.get(
+        "to_account"), validated_data.get("amount")
+    instance = klass.objects.create(account=account, to_account=to_account, amount=amount,
+                                    direction=PaymentDirectionChoices.OUTGOING,
+                                    transaction_id=transaction_id)
+    klass.objects.create(account=to_account, from_account=account, amount=amount,
+                         direction=PaymentDirectionChoices.INCOMING,
+                         transaction_id=transaction_id)
+    account.balance = account.balance - amount
+    to_account.balance = to_account.balance + amount
+    account.save()
+    to_account.save()
+    return instance
 
 
 class PaymentSerializer(serializers.ModelSerializer):
@@ -33,18 +64,8 @@ class PaymentSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         klass = self.Meta.model
         transaction_id = str(uuid.uuid4())
-        account, to_account, amount = validated_data.get("account"), validated_data.get(
-            "to_account"), validated_data.get("amount")
-        instance = klass.objects.create(account=account, to_account=to_account, amount=amount,
-                                        direction=PaymentDirectionChoices.OUTGOING,
-                                        transaction_id=transaction_id)
-        klass.objects.create(account=to_account, from_account=account, amount=amount,
-                             direction=PaymentDirectionChoices.INCOMING,
-                             transaction_id=transaction_id)
-        account.balance = account.balance - amount
-        to_account.balance = to_account.balance + amount
-        account.save()
-        to_account.save()
+        with transaction.atomic():
+            instance = create_instance(validated_data, klass, transaction_id)
         return instance
 
     class Meta:
