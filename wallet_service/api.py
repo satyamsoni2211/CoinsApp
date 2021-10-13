@@ -34,9 +34,3 @@ class CreatePaymentAPI(CreateAPIView):
     serializer class `:py:obj::wallet_service.serializers.PaymentSerializer`
     """
     serializer_class = PaymentSerializer
-
-    def create(self, request, *args, **kwargs):
-        ser: PaymentSerializer = self.get_serializer(data=request.data)
-        ser.is_valid(raise_exception=True)
-        self.perform_create(ser)
-        return Response(data=ser.data)
