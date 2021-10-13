@@ -1,5 +1,4 @@
 from rest_framework.generics import ListAPIView, CreateAPIView
-from rest_framework.response import Response
 from rest_framework.filters import SearchFilter
 from .models import UserAccount, Payment
 from .serializers import UserAccountSerializer, PaymentSerializer

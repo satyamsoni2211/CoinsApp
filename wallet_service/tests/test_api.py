@@ -1,6 +1,6 @@
 from rest_framework.test import APITestCase
 from rest_framework import status
-from wallet_service.models import UserAccount, CurrencyChoices, PaymentDirectionChoices
+from wallet_service.models import UserAccount, CurrencyChoices
 from django.shortcuts import reverse
 from django.http import QueryDict
 
