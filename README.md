@@ -17,59 +17,77 @@ Please follow below steps to setup your enviornment and bootstrap application
 It is recommended to prefer virtual environment for your applications so that you can isolate your dependencies and
 manage them in a better way for individual projects.
 
-> python3 -m pip install virtualenv
-> python3 -m virtualenv venv
+```shell
+python3 -m pip install virtualenv
+python3 -m virtualenv venv
+```
 
 After creation we need to active it, so that we point to the correct interpreter and environment.
 
-> source venv/bin/active # linux and MAC
-> .\venv\Scripts\activate # windows
+```shell
+source venv/bin/active # linux and MAC
+.\venv\Scripts\activate # windows
+```
 
 ## Installing Dependencies
 
 We will need to install all the dependencies in order to run the project.
 
-> python3 -m pip install -r requirements.txt
+```shell
+python3 -m pip install -r requirements.txt
+```
 
 # Setting up database
 
 We are using docker to set up Postgres rather than installing it locally. To quickly spin up instance of **Postgres**,
 run the below command.
 
-> make pg
+```shell
+make pg
+```
 
 If you are running this command for the first time, it will pull the image for you and set up everything locally. I have
 mapped a directory for persisting file so that the data is not lost once the container is stopped. You can also run and
 customize below command, for custom inputs to the **DB**.
 
-> docker run -e POSTGRES_USER=postgres \  
+```shell 
+docker run -e POSTGRES_USER=postgres \  
 -e POSTGRES_DB=postgres \  
 -e POSTGRES_PASSWORD=postgres \  
 -e PGDATA=/var/lib/postgresql/data/pgdata \  
 -p 5432:5432 \  
 -v ${PWD}/data:/var/lib/postgresql/data/pgdata \  
 postgres
+```
 
 # Running Project
 
 Before running the project make sure you have applied all the migrations to your database. To apply migrations, run:
 
-> python manage.py makemigrations
-> python manage.py migrate
+```shell
+python manage.py makemigrations
+python manage.py migrate
+```
 
 Above commands will create and apply all the migrations to the project.
 
 To run project directly in development mode, set **Debug** to **True** and run:
 
-> python manage.py runserver
+```shell
+python manage.py runserver
+```
 
 To run using **Gunicorn** webserver, run:
 
-> gunicorn -w 4 CoinsApp.wsgi:application
+```shell
+gunicorn -w 4 CoinsApp.wsgi:application
+```
 
 You can also quickly spin up your server and db instance using the below command:
 
-> docker-compose up --build
+```shell
+docker-compose up --build
+```
 
 This will spin up docker instance of your PostGres and Server, and then you can
 visit [document url](localhost:8000/swagger/) to check all the available API's in the project.
@@ -78,7 +96,9 @@ visit [document url](localhost:8000/swagger/) to check all the available API's i
 
 You can also test your project simply by running below command:
 
-> make test
+```shell
+make test
+```
 
 There are automated tests already in place, which will get trigger for every push to master using github
 actions. ![Django CI](https://github.com/satyamsoni2211/CoinsApp/actions/workflows/django.yml/badge.svg)
