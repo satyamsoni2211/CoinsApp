@@ -6,7 +6,10 @@
 This is Django Based Application simulating actual payment transfers amongst different accounts. Application makes
 extensive use of [django rest framework](https://www.django-rest-framework.org/) for its rest API. It uses PostgreSQL as
 database and is capable of handling atomic transactions without failure. You can find running instance of the
-application at [CoinApp](https://coins-app-demo.herokuapp.com/swagger/).
+application at [CoinsApp](https://coins-app-demo.herokuapp.com/swagger/).
+
+[CoinsApp](https://coins-app-demo.herokuapp.com/swagger/) has beautiful Swagger Open API specification documentation
+explaining the required data types from user and response payloads.
 
 # Environment Setup
 
