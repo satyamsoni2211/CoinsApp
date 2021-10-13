@@ -17,5 +17,9 @@ services:
       - 8000:8000
     depends_on:
       - db
+      - test
     environment:
-      PG_HOST: dbpip install whitenoise
+      PG_HOST: db
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: postgres

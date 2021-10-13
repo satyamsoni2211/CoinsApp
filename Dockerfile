@@ -2,6 +2,8 @@ FROM python:3.9-slim
 WORKDIR /app
 COPY requirements.txt .
 RUN python3 -m pip install -r requirements.txt
+RUN apt-get update && \
+    apt-get install postgresql --yes
 COPY . .
 RUN chmod +x ./entrypoint.sh
 EXPOSE 8000

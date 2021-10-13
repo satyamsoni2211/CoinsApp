@@ -1,6 +1,6 @@
 import uuid
 from rest_framework import serializers
-from rest_framework.exceptions import APIException
+from rest_framework.exceptions import ValidationError
 
 from wallet_service.models import UserAccount, Payment, PaymentDirectionChoices
 
@@ -15,11 +15,18 @@ class PaymentSerializer(serializers.ModelSerializer):
     def is_valid(self, raise_exception=False):
         valid = super(PaymentSerializer, self).is_valid(raise_exception=raise_exception)
         data = self.validated_data
-        account, amount = data.get("account"), data.get("amount")
+        account, amount, to_account = data.get("account"), \
+                                      data.get("amount"), \
+                                      data.get("to_account")
         if amount > account.balance:
             if raise_exception:
-                raise APIException("Amount to be transferred cannot "
-                                   "be more than account holdings")
+                raise ValidationError("Amount to be transferred cannot "
+                                      "be more than account holdings")
+            return False
+        if account.currency != to_account.currency:
+            if raise_exception:
+                raise ValidationError(f"Only same currency allowed got "
+                                      f"{account.currency} and {to_account.currency}")
             return False
         return valid
 

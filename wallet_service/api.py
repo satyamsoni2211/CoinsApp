@@ -11,6 +11,8 @@ class ListAccounts(ListAPIView):
     """
     queryset = UserAccount.objects.all()
     serializer_class = UserAccountSerializer
+    filter_backends = [SearchFilter, ]
+    search_fields = ["id", "currency"]
 
 
 class ListPaymentAPI(ListAPIView):

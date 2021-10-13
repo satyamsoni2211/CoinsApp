@@ -16,6 +16,7 @@ from pathlib import Path
 
 dotenv.load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+ENV = os.environ.get("ENV")
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
@@ -25,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-dt7fpgnda=q(*(cv)f!ae0ex4a*#ulj$jmw@f*jyb)mzfuxd&e'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["*", ]
 
@@ -76,16 +77,24 @@ WSGI_APPLICATION = 'CoinsApp.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'USER': os.environ.get("PG_USER"),
-        'NAME': os.environ.get("PG_NAME"),
-        'PASSWORD': os.environ.get("PG_PASSWORD"),
-        'HOST': os.environ.get("PG_HOST"),
-        'PORT': os.environ.get("PG_PORT")
-    },
-}
+if ENV == "TEST":
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': 'mydatabase',
+        }
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'USER': os.environ.get("PG_USER"),
+            'NAME': os.environ.get("PG_NAME"),
+            'PASSWORD': os.environ.get("PG_PASSWORD"),
+            'HOST': os.environ.get("PG_HOST"),
+            'PORT': os.environ.get("PG_PORT")
+        },
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
