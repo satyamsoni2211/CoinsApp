@@ -1,6 +1,7 @@
 # Welcome to CoinsApp!
 
 [![Django CI](https://github.com/satyamsoni2211/CoinsApp/actions/workflows/django.yml/badge.svg)](https://github.com/satyamsoni2211/CoinsApp/actions/workflows/django.yml) [![forthebadge made-with-python](http://ForTheBadge.com/images/badges/made-with-python.svg)](https://www.python.org/) ![DjangoREST](https://img.shields.io/badge/DJANGO-REST-ff1709?style=for-the-badge&logo=django&logoColor=white&color=ff1709&labelColor=gray)
+[![Flake 8](https://github.com/satyamsoni2211/CoinsApp/actions/workflows/python-app.yml/badge.svg)](https://github.com/satyamsoni2211/CoinsApp/actions/workflows/python-app.yml)
 
 This is Django Based Application simulating actual payment transfers amongst different accounts. Application makes
 extensive use of [django rest framework](https://www.django-rest-framework.org/) for its rest API. It uses PostgreSQL as
